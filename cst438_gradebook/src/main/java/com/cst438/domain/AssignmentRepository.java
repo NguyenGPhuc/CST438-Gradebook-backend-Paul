@@ -1,5 +1,6 @@
 package com.cst438.domain;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
@@ -10,4 +11,8 @@ public interface AssignmentRepository extends CrudRepository <Assignment, Intege
 
 	@Query("select a from Assignment a where a.needsGrading=1 and a.dueDate < current_date and a.course.instructor= :email order by a.id")
 	List<Assignment> findNeedGradingByEmail(@Param("email") String email);
+	
+	//@Query("select a from assignment where a.id == :assignmentId")
+	//Assignment findById(@Param("assignmentId") int assignmentId);
+
 }
