@@ -152,9 +152,32 @@ public class GradeBookController {
 			System.out.printf("%s\n", ag.toString());
 			
 			assignmentGradeRepository.save(ag);
-		}
-		
+		}	
 	}
+	
+	
+	
+//public GradebookDTO getGradebook(@PathVariable("id") Integer assignmentId  ) {
+		
+//		String email = "dwisneski@csumb.edu";  // user name (should be instructor's email) 
+//		Assignment assignment = checkAssignment(assignmentId, email);
+	
+	@PostMapping("/assignment")
+	@Transactional
+	public void AddClass() {
+		
+		// check that this request is from the course instructor 
+		String email = "dwisneski@csumb.edu";  // user name (should be instructor's email) 
+		Assignment assignment = 
+		
+		GradebookDTO gradebook = new GradebookDTO();
+		gradebook.assignmentId= assignmentId;
+		gradebook.assignmentName = assignment.getName();
+		
+		
+		registrationService.sendFinalGrades(course_id, cdto);
+	}
+	
 	
 	private Assignment checkAssignment(int assignmentId, String email) {
 		// get assignment 
