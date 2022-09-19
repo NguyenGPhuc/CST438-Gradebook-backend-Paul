@@ -25,6 +25,8 @@ import com.cst438.domain.CourseDTOG;
 import com.cst438.domain.CourseRepository;
 import com.cst438.domain.Enrollment;
 import com.cst438.domain.GradebookDTO;
+import com.cst438.domain.ScheduleDTO;
+import com.cst438.domain.Student;
 import com.cst438.services.RegistrationService;
 
 @RestController
@@ -56,6 +58,7 @@ public class GradeBookController {
 		}
 		return result;
 	}
+	
 	
 	@GetMapping("/gradebook/{id}")
 	public GradebookDTO getGradebook(@PathVariable("id") Integer assignmentId  ) {
@@ -156,27 +159,6 @@ public class GradeBookController {
 	}
 	
 	
-	
-//public GradebookDTO getGradebook(@PathVariable("id") Integer assignmentId  ) {
-		
-//		String email = "dwisneski@csumb.edu";  // user name (should be instructor's email) 
-//		Assignment assignment = checkAssignment(assignmentId, email);
-	
-	@PostMapping("/assignment")
-	@Transactional
-	public void AddClass() {
-		
-		// check that this request is from the course instructor 
-		String email = "dwisneski@csumb.edu";  // user name (should be instructor's email) 
-		Assignment assignment = 
-		
-		GradebookDTO gradebook = new GradebookDTO();
-		gradebook.assignmentId= assignmentId;
-		gradebook.assignmentName = assignment.getName();
-		
-		
-		registrationService.sendFinalGrades(course_id, cdto);
-	}
 	
 	
 	private Assignment checkAssignment(int assignmentId, String email) {
