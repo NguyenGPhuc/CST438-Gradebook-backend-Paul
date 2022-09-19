@@ -8,6 +8,6 @@ import org.springframework.data.repository.query.Param;
 
 public interface CourseRepository extends CrudRepository <Course, Integer> {
 	
-	//@Query("select distinct a from Assignment where a.course.instructor = :email")
-	//List<Course> findByEmail(@Param("email") String email);
+	@Query("select a from Course a where a.instructor = :email")
+	List<Course> findByEmail(@Param("email") String email);
 }

@@ -65,5 +65,10 @@ public class Assignment {
 		return "Assignment [id=" + id + ", course_id=" + course.getCourse_id() + ", name=" + name + ", dueDate=" + dueDate
 				+ ", needsGrading=" + needsGrading + "]";
 	}
+	public Assignment orElse(Object object) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	
 }
