@@ -48,6 +48,7 @@ public class InstructorController{
 		}
 	}
 	
+	@Transactional
 	@PostMapping("/instructor/delete{id}")
 	public void updateAssignment(@PathVariable("id") Integer assignmentId) {
 		Assignment a = assignmentRepository.findById(assignmentId).orElse(null);
@@ -60,8 +61,8 @@ public class InstructorController{
 		}	
 	}
 	
-	@PutMapping("/instructor/update{id}")
 	@Transactional
+	@PutMapping("/instructor/update{id}")
 	public void updateAssignment (@PathVariable("id") Integer assignmentId, String name ) {
 		Assignment a = assignmentRepository.findById(assignmentId).orElse(null);
 		if (a == null) {
