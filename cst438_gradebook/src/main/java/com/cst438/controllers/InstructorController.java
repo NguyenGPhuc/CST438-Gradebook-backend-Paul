@@ -59,7 +59,7 @@ public class InstructorController{
 	}
 	
 	@Transactional
-	@PostMapping("/instructor/delete{id}")
+	@PostMapping("/instructor/delete/{id}")
 	public void updateAssignment(@PathVariable("id") Integer assignmentId) {
 		Assignment a = assignmentRepository.findById(assignmentId).orElse(null);
 		if(a == null) {
