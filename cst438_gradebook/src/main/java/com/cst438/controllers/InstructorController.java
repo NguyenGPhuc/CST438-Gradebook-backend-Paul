@@ -37,15 +37,15 @@ public class InstructorController{
 	CourseRepository courseRepository;
 	
 	@Transactional
-	@PostMapping("/instructor/add/{id}")
-	public AssignmentDTO createAssignment(@PathVariable("id")int id, @RequestBody String assignmentName, Date dueDate){
+	@PostMapping("/instructor/add/{assignmentId}")
+	public AssignmentDTO createAssignment(@PathVariable("assignmentId")int assignmentId, @RequestBody String assignmentName, Date dueDate){
 		
-		Optional<Assignment> a = assignmentRepository.findById(id);
+		Optional<Assignment> a = assignmentRepository.findById(assignmentId);
 		
 		if(a.isEmpty()) {
 			AssignmentDTO at = new AssignmentDTO();
 			Assignment ta = new Assignment();
-			ta.setId( id);
+			ta.setId(assignmentId);
 			ta.setName(assignmentName);
 			ta.setDueDate(dueDate);
 			at.assignmentId = ta.getId();

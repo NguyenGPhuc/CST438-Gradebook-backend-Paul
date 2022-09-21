@@ -24,6 +24,7 @@ import com.cst438.domain.Assignment;
 import com.cst438.domain.AssignmentGrade;
 import com.cst438.domain.AssignmentGradeRepository;
 import com.cst438.domain.AssignmentRepository;
+import com.cst438.domain.AssignmentDTO;
 import com.cst438.domain.Course;
 import com.cst438.domain.CourseRepository;
 import com.cst438.domain.Enrollment;
@@ -241,6 +242,45 @@ public class JunitTestGradebook {
 		updatedag.setId(1);
 		updatedag.setScore("88");
 		verify(assignmentGradeRepository, times(1)).save(updatedag);
+	}
+	
+	@Test
+	public void addAssignment() throws Exception {
+		MockHttpServletResponse response;
+		
+		Course course = new Course();
+		course.setCourse_id(TEST_COURSE_ID);
+		course.setSemester(TEST_SEMESTER);
+		course.setYear(TEST_YEAR);
+		course.setInstructor(TEST_INSTRUCTOR_EMAIL);
+		
+		Assignment assignment = new Assignment();
+		assignment.setCourse(course);
+		
+		// set dueDate to 1 week before now.
+		assignment.setDueDate(new java.sql.Date(System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000));
+		assignment.setId(15);
+		assignment.setName("Assignment 1");
+		assignment.setNeedsGrading(1);
+		
+		AssignmentDTO adto = new AssignmentDTO();
+		adto.assignmentId = assignment.getId();
+		adto.assignmentName = assignment.getName();
+		adto.courseId = assignment.getCourse();
+		adto.dueDate = assignment.getDueDate();
+		adto.courseTitle = assignment.getName();
+		assignmentRepository.save(assignment);
+		//verify(assignmentRepository, times(1)).save(assignment);
+		
+		//given(assignmentRepository.findById(assignment.getId())).willReturn(Optional.of(assignment));
+		System.out.println(adto.assignmentId);
+		
+		response = mvc.perform(MockMvcRequestBuilders.post("/instructor/add/15").accept(MediaType.APPLICATION_JSON)
+				.content(asJsonString(adto)).contentType(MediaType.APPLICATION_JSON))
+		.andReturn().getResponse();
+		
+		assertEquals(200, response.getStatus());
+		
 	}
 
 	private static String asJsonString(final Object obj) {
