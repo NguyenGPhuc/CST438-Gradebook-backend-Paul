@@ -37,22 +37,14 @@ public class InstructorController{
 	CourseRepository courseRepository;
 	
 	@Transactional
-	@PostMapping("/instructor/add/{assignmentId}")
-	public AssignmentDTO createAssignment(@PathVariable("assignmentId")int assignmentId, @RequestBody String assignmentName, Date dueDate){
+	@PostMapping("/instructor/add")
+	public void createAssignment(@RequestBody AssignmentDTO adto){
 		
-		Optional<Assignment> a = assignmentRepository.findById(assignmentId);
+		Optional<Assignment> a = assignmentRepository.findById(adto.assignmentId);
 		
 		if(a.isEmpty()) {
-			AssignmentDTO at = new AssignmentDTO();
-			Assignment ta = new Assignment();
-			ta.setId(assignmentId);
-			ta.setName(assignmentName);
-			ta.setDueDate(dueDate);
-			at.assignmentId = ta.getId();
-			at.assignmentName = ta.getName();
-			at.dueDate = ta.getDueDate();
+			Assignment ta = new Assignment(adto);
 			assignmentRepository.save(ta);
-			return at;
 		}else {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Assignment already exists");
 		}
@@ -61,33 +53,31 @@ public class InstructorController{
 	@Transactional
 	@PostMapping("/instructor/delete/{id}")
 	public void updateAssignment(@PathVariable("id") Integer assignmentId) {
-		Assignment a = assignmentRepository.findById(assignmentId).orElse(null);
-		if(a == null) {
+		Optional<Assignment> check = assignmentRepository.findById(assignmentId);
+		
+		if(check.isEmpty()) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid assignment primary key."+ assignmentId);
-		}else if(a.getNeedsGrading() > 0 ) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Assignment needs grading before deletion.");
+		}
+		Assignment nuu = check.get();
+		if(nuu.getNeedsGrading() > 0) {
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Assignment still needs grading.");
 		}else {
-			assignmentRepository.delete(a);
-		}	
+			assignmentRepository.delete(nuu);
+		}
+		
 	}
 	
 	@Transactional
 	@PutMapping("/instructor/update")
-	public AssignmentDTO updateAssignment (@RequestBody AssignmentDTO assignment, String name) {
+	public void updateAssignment (@RequestBody AssignmentDTO assignment) {
+		
 		Optional<Assignment> op = assignmentRepository.findById(assignment.assignmentId);
 		
 		if (!op.isPresent()) {
 			throw new ResponseStatusException( HttpStatus.BAD_REQUEST, "Invalid assignment primary key. "+assignment.assignmentId);
 		}else {
-			Assignment a = op.get();
-			AssignmentDTO ndto = new AssignmentDTO();
-			a.setName(name);
-			ndto.assignmentId = a.getId();
-			ndto.courseId = a.getCourse(); 
-			ndto.assignmentName = a.getName();
-			ndto.dueDate = a.getDueDate();
-			assignmentRepository.save(a);
-			return ndto;
+			Assignment nuu = op.get();
+			assignmentRepository.save(nuu);
 		}
 		
 	}

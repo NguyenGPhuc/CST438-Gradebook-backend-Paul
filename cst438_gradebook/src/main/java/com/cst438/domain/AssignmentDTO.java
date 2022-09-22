@@ -9,14 +9,16 @@ public class AssignmentDTO {
 	public String assignmentName;
 	public Date dueDate;
 	public String courseTitle;
+	public int needsGrading;
 	
-	public AssignmentDTO(int assignmentId, Course courseId, String assignmentName, Date dueDate, String courseTitle) {
+	public AssignmentDTO(int assignmentId, Course courseId, String assignmentName, Date dueDate, String courseTitle, int needsGrading) {
 		super();
 		this.assignmentId = assignmentId;
 		this.courseId = courseId;
 		this.assignmentName = assignmentName;
 		this.dueDate = dueDate;
 		this.courseTitle = courseTitle;
+		this.needsGrading = needsGrading;
 	}
 
 	public AssignmentDTO() {
@@ -61,6 +63,12 @@ public class AssignmentDTO {
 
 	public void setCourseTitle(String courseTitle) {
 		this.courseTitle = courseTitle;
+	}
+	public int getNeedsGrading() {
+		return needsGrading;
+	}
+	public void setNeedsGrading(int needsGrading) {
+		this.needsGrading = needsGrading;
 	}
 	
 	@Override
