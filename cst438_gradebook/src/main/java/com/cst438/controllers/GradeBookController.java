@@ -25,8 +25,6 @@ import com.cst438.domain.CourseDTOG;
 import com.cst438.domain.CourseRepository;
 import com.cst438.domain.Enrollment;
 import com.cst438.domain.GradebookDTO;
-import com.cst438.domain.ScheduleDTO;
-import com.cst438.domain.Student;
 import com.cst438.services.RegistrationService;
 
 @RestController
@@ -91,6 +89,8 @@ public class GradeBookController {
 		}
 		return gradebook;
 	}
+	
+	
 	
 	@PostMapping("/course/{course_id}/finalgrades")
 	@Transactional

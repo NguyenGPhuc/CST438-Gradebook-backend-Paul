@@ -1,7 +1,7 @@
 package com.cst438.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,48 +25,57 @@ import com.cst438.domain.CourseDTOG;
 import com.cst438.domain.CourseRepository;
 import com.cst438.domain.Enrollment;
 import com.cst438.domain.GradebookDTO;
-import com.cst438.domain.ScheduleDTO;
-import com.cst438.domain.Student;
 import com.cst438.services.RegistrationService;
 
 @RestController
 @CrossOrigin(origins = {"http://localhost:3000","http://localhost:3001"})
-public class AssignmentController {
-	
+public class AssignmentController{
+
 	@Autowired
 	AssignmentRepository assignmentRepository;
 	
 	@Autowired
-	AssignmentGradeRepository assignmentGradeRepository;
-	
-	@Autowired
 	CourseRepository courseRepository;
 	
-	// Add a new assignment to a course using ID
-	@PostMapping("/assignment")
 	@Transactional
-	public AssignmentListDTO addCourse( @RequestBody AssignmentListDTO assignmentDTO ) { 
-
-		String email = "dwisneski@csumb.edu";  // user name (should be instructor's email) 
-		
-//		Assignment assignment = assignmentRepository.findByAssignmentName(assignmentDTO.assignments);
-
-		
-		if (assignmentDTO!= null) {
-			// TODO check that today's date is not past add deadline for the course.
-			Assignment newAssignment = new Assignment();
-//			newAssignment.setName(assignmentDTO.getName());
-//			newAssignment.setDueDate(assignmentDTO.getDueDate());
+	@PostMapping("/instructor/add")
+	public void createAssignment(Integer id, String name, Date dueDate) throws Exception{
+		Assignment assignment = assignmentRepository.findById(id).orElse(null);
+		if(assignment == null) {
+			assignment = new Assignment();
+			assignment.setName(name);
+			assignment.setDueDate((java.sql.Date) dueDate);
+			assignmentRepository.save(assignment);
+			throw new ResponseStatusException(HttpStatus.CREATED, "Assignment Created.");
+		}else {
+			throw new Exception("Assignment already exists");
+		}
+	}
 	
-			Assignment savedAssignment = assignmentRepository.save(newAssignment);
-			
-			
-//			AssignmentListDTO result = createCourseDTO(savedEnrollment);
-			
-			return assignmentDTO;
-		} else {
-			throw  new ResponseStatusException( HttpStatus.BAD_REQUEST, "The name for this assignment have already existed  "+assignmentDTO.assignments);
+	@PostMapping("/instructor/delete{id}")
+	public void updateAssignment(@PathVariable("id") Integer assignmentId) {
+		Assignment a = assignmentRepository.findById(assignmentId).orElse(null);
+		if(a == null) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid assignment primary key."+ assignmentId);
+		}else if(a.getNeedsGrading() > 0 ) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Assignment needs grading before deletion.");
+		}else {
+			assignmentRepository.delete(a);
+		}	
+	}
+	
+	@PutMapping("/instructor/update{id}")
+	@Transactional
+	public void updateAssignment (@PathVariable("id") Integer assignmentId, String name ) {
+		Assignment a = assignmentRepository.findById(assignmentId).orElse(null);
+		if (a == null) {
+			throw new ResponseStatusException( HttpStatus.BAD_REQUEST, "Invalid assignment primary key. "+assignmentId);
+		}else {
+			a.setName(name);
+			System.out.printf("%s\n", a.toString());
+			assignmentRepository.save(a);
 		}
 		
 	}
+		
 }
