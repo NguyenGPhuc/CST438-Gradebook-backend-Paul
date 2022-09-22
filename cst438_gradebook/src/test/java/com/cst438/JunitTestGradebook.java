@@ -20,6 +20,7 @@ import static org.mockito.Mockito.verify;
 import java.util.Optional;
 
 import com.cst438.controllers.GradeBookController;
+import com.cst438.controllers.InstructorController;
 import com.cst438.domain.Assignment;
 import com.cst438.domain.AssignmentGrade;
 import com.cst438.domain.AssignmentGradeRepository;
@@ -33,6 +34,7 @@ import com.cst438.services.RegistrationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.jdbc.Sql;
 
 /* 
  * Example of using Junit with Mockito for mock objects
@@ -47,7 +49,7 @@ import org.springframework.test.context.ContextConfiguration;
  *  addFilters=false turns off security.  (I could not get security to work in test environment.)
  *  WebMvcTest is needed for test environment to create Repository classes.
  */
-@ContextConfiguration(classes = { GradeBookController.class })
+@ContextConfiguration(classes = { GradeBookController.class, InstructorController.class })
 @AutoConfigureMockMvc(addFilters = false)
 @WebMvcTest
 public class JunitTestGradebook {
@@ -58,6 +60,7 @@ public class JunitTestGradebook {
 	public static final String TEST_STUDENT_NAME = "test";
 	public static final String TEST_INSTRUCTOR_EMAIL = "dwisneski@csumb.edu";
 	public static final int TEST_YEAR = 2021;
+	public static final int TEST_DATE = 30;
 	public static final String TEST_SEMESTER = "Fall";
 
 	@MockBean
@@ -246,39 +249,23 @@ public class JunitTestGradebook {
 	
 	@Test
 	public void addAssignment() throws Exception {
+		
+		
 		MockHttpServletResponse response;
-		
-		Course course = new Course();
-		course.setCourse_id(TEST_COURSE_ID);
-		course.setSemester(TEST_SEMESTER);
-		course.setYear(TEST_YEAR);
-		course.setInstructor(TEST_INSTRUCTOR_EMAIL);
-		
-		Assignment assignment = new Assignment();
-		assignment.setCourse(course);
-		
 		// set dueDate to 1 week before now.
-		assignment.setDueDate(new java.sql.Date(System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000));
-		assignment.setId(15);
-		assignment.setName("Assignment 1");
-		assignment.setNeedsGrading(1);
-		
 		AssignmentDTO adto = new AssignmentDTO();
-		adto.assignmentId = assignment.getId();
-		adto.assignmentName = assignment.getName();
-		adto.courseId = assignment.getCourse();
-		adto.dueDate = assignment.getDueDate();
-		adto.courseTitle = assignment.getName();
-		assignmentRepository.save(assignment);
-		//verify(assignmentRepository, times(1)).save(assignment);
+		adto.setAssignmentID(20);
+		adto.setassignmentName("JUnit Test Assignment");
+		adto.setDueDate(new java.sql.Date(System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000));
+		adto.setNeedsGrading(1);
 		
-		//given(assignmentRepository.findById(assignment.getId())).willReturn(Optional.of(assignment));
-		System.out.println(adto.assignmentId);
+		System.out.println(asJsonString(adto));
 		
-		response = mvc.perform(MockMvcRequestBuilders.post("/instructor/add/15").accept(MediaType.APPLICATION_JSON)
+		response = mvc.perform(MockMvcRequestBuilders.post("/instructor/add").accept(MediaType.APPLICATION_JSON)
 				.content(asJsonString(adto)).contentType(MediaType.APPLICATION_JSON))
 		.andReturn().getResponse();
 		
+		//verify(assignmentRepository, times(1)).save(any());
 		assertEquals(200, response.getStatus());
 		
 	}
