@@ -1,5 +1,6 @@
 package com.cst438.controllers;
 
+import java.io.Console;
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
@@ -8,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -37,6 +40,7 @@ public class InstructorController{
 	@Autowired
 	CourseRepository courseRepository;
 	
+	// Add a need assignment.
 	@Transactional
 	@PostMapping("/instructor/add")
 	public void createAssignment(@RequestBody AssignmentDTO adto){
@@ -51,34 +55,37 @@ public class InstructorController{
 		}
 	}
 	
+	// Delete an assignment using ID. Grade must be set to 0 before delete.
 	@Transactional
-	@PostMapping("/instructor/delete/{id}")
-	public void updateAssignment(@PathVariable("id") Integer assignmentId) {
-		Optional<Assignment> check = assignmentRepository.findById(assignmentId);
+	@PostMapping("/instructor/delete")
+	public void deleteAssignment(@RequestBody AssignmentDTO deleteDTO) {
+		Optional<Assignment> check = assignmentRepository.findById(deleteDTO.assignmentId);
 		
 		if(check.isEmpty()) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid assignment primary key."+ assignmentId);
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid assignment primary key."+ deleteDTO.assignmentId);
 		}
 		Assignment nuu = check.get();
 		if(nuu.getNeedsGrading() > 0) {
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Assignment still needs grading.");
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "This assignment has a grade in it. Assign grade to 0 before delete.");
 		}else {
 			assignmentRepository.delete(nuu);
 		}
 		
 	}
 	
+	// Upgrade an assignment name.
 	@Transactional
 	@PutMapping("/instructor/update")
-	public void updateAssignment (@RequestBody AssignmentDTO assignment) {
+	public void updateAssignment (@RequestBody AssignmentDTO updateAssignment) {
 		
-		Optional<Assignment> op = assignmentRepository.findById(assignment.assignmentId);
+		Optional<Assignment> op = assignmentRepository.findById(updateAssignment.assignmentId);
 		
 		if (!op.isPresent()) {
-			throw new ResponseStatusException( HttpStatus.BAD_REQUEST, "Invalid assignment primary key. "+assignment.assignmentId);
+			throw new ResponseStatusException( HttpStatus.BAD_REQUEST, "Invalid assignment primary key "+updateAssignment.assignmentId);
 		}else {
-			Assignment nuu = op.get();
-			assignmentRepository.save(nuu);
+			Assignment upDate = op.get();
+	
+			assignmentRepository.save(upDate);
 		}
 		
 	}
