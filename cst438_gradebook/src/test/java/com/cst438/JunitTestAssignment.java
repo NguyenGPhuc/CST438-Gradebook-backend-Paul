@@ -72,71 +72,73 @@ public class JunitTestAssignment {
 	@Autowired
 	private MockMvc mvc;
 	
+	// Test case for adding new assignment.
 	@Test
 	public void addAssignment() throws Exception {
 		
 		MockHttpServletResponse response;
 		
+		// Make mock assignment.
 		Assignment assignment = new Assignment();
-		// set dueDate to 1 week before now.
 		assignment.setId(TEST_ASSIGNMENT_ID);
 		assignment.setName(TEST_ASSIGNMENT_NAME);
+		// set dueDate to 1 week before now.
 		assignment.setDueDate(new java.sql.Date(System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000));
 		assignment.setNeedsGrading(0);
 		
+		// Get assignment in repository
 		given(assignmentRepository.findById(TEST_ASSIGNMENT_ID)).willReturn(null);
 		given(assignmentRepository.save(any(Assignment.class))).willReturn(assignment);
 		
-		
-		// set dueDate to 1 week before now.
-		AssignmentDTO adto = new AssignmentDTO();
-		adto.setAssignmentID(TEST_ASSIGNMENT_ID + 1);
-		adto.setassignmentName(TEST_ASSIGNMENT_NAME);
-		adto.setDueDate(new java.sql.Date(System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000));
-		adto.setNeedsGrading(1);
-		
-		System.out.println(asJsonString(adto));
-		
+		// Test add request
 		response = mvc.perform(MockMvcRequestBuilders.post("/instructor/add").accept(MediaType.APPLICATION_JSON)
-				.content(asJsonString(adto)).contentType(MediaType.APPLICATION_JSON))
+				.content(asJsonString(assignment)).contentType(MediaType.APPLICATION_JSON))
 		.andReturn().getResponse();
 		
-//		verify(assignmentRepository, times(1)).save(any());
+		// Test status
 		assertEquals(200, response.getStatus());
-		
-	
-//		AssignmentDTO result = fromJsonString(response.getContentAsString(), AssignmentDTO.class);
-//		assertNotEquals(0, result.assignmentId);
-		
-		
-//		assertEquals(200, response.getStatus());
 		
 	}
 	
+	
+	// Test updating existing assignment.
 	@Test
 	public void updateAssignemnt()throws Exception{
 		
 		MockHttpServletResponse response;
 		
+		// Mock course
+		Course course = new Course();
+		course.setCourse_id(TEST_COURSE_ID);
+		course.setSemester(TEST_SEMESTER);
+		course.setYear(TEST_YEAR);
+		course.setInstructor(TEST_INSTRUCTOR_EMAIL);
+		course.setEnrollments(new java.util.ArrayList<Enrollment>());
+		course.setAssignments(new java.util.ArrayList<Assignment>());
+		
+		// Mock assignment
 		Assignment assignment = new Assignment();
-		// set dueDate to 1 week before now.
-		assignment.setId(TEST_ASSIGNMENT_ID);
-		assignment.setName(TEST_ASSIGNMENT_NAME);
-		assignment.setDueDate(new java.sql.Date(System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000));
-		assignment.setNeedsGrading(1);
+		assignment.setCourse(course);
+		course.getAssignments().add(assignment);
 		
-		given(assignmentRepository.findById(TEST_ASSIGNMENT_ID)).willReturn(null);
-		given(assignmentRepository.save(any(Assignment.class))).willReturn(assignment);
-		
+	
+		// DTO for updating
 		AssignmentDTO adto = new AssignmentDTO();
+		adto.getCourseId();
 		adto.setAssignmentID(TEST_ASSIGNMENT_ID);
 		adto.setassignmentName("Some new name");
+		// set dueDate to 1 week before now.
 		adto.setDueDate(new java.sql.Date(System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000));
 		adto.setNeedsGrading(0);
 		
+		// Set mock repository
+		given(assignmentRepository.findById(TEST_ASSIGNMENT_ID)).willReturn(Optional.of(assignment));
+		given(assignmentRepository.save(any(Assignment.class))).willReturn(assignment);
+		
+		
 		System.out.println(asJsonString(adto));
 		
-		
+		// Test update request
 		response = mvc.perform(MockMvcRequestBuilders.put("/instructor/update").accept(MediaType.APPLICATION_JSON)
 				.content(asJsonString(adto)).contentType(MediaType.APPLICATION_JSON))
 		.andReturn().getResponse();
@@ -147,7 +149,6 @@ public class JunitTestAssignment {
 	
 	
 	
-	@Disabled("WIP")
 	@Test
 	public void deleteAssignment() throws Exception {
 		
@@ -155,30 +156,39 @@ public class JunitTestAssignment {
 	
 		// mock database data
 		
-		Assignment assignment = new Assignment();
-		// set dueDate to 1 week before now.
-		assignment.setDueDate(new java.sql.Date(System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000));
-		assignment.setId(TEST_ASSIGNMENT_ID);
-		assignment.setName(TEST_ASSIGNMENT_NAME);
-		assignment.setNeedsGrading(1);
+		// Mock course
+		Course course = new Course();
+		course.setCourse_id(TEST_COURSE_ID);
+		course.setSemester(TEST_SEMESTER);
+		course.setYear(TEST_YEAR);
+		course.setInstructor(TEST_INSTRUCTOR_EMAIL);
+		course.setEnrollments(new java.util.ArrayList<Enrollment>());
+		course.setAssignments(new java.util.ArrayList<Assignment>());
 		
-		given(assignmentRepository.findById(TEST_ASSIGNMENT_ID)).willReturn(null);
+		// Mock assignment
+		Assignment assignment = new Assignment();
+		assignment.setCourse(course);
+		course.getAssignments().add(assignment);
+		
+		// Mock DTO
+		AssignmentDTO adto = new AssignmentDTO();
+		adto.getCourseId();
+		adto.setAssignmentID(TEST_ASSIGNMENT_ID);
+		adto.setassignmentName("Some new name");
+		// set dueDate to 1 week before now.
+		adto.setDueDate(new java.sql.Date(System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000));
+		adto.setNeedsGrading(0);
+		
+		// Set mock repository
+		given(assignmentRepository.findById(TEST_ASSIGNMENT_ID)).willReturn(Optional.of(assignment));
 		given(assignmentRepository.save(any(Assignment.class))).willReturn(assignment);
 		
-			
-		AssignmentDTO assignmentDTO = new AssignmentDTO();
-		assignmentDTO.assignmentId = TEST_ASSIGNMENT_ID;
-		assignmentDTO.assignmentName = TEST_ASSIGNMENT_NAME;
-		assignmentDTO.dueDate = new java.sql.Date(System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000);
-		assignmentDTO.needsGrading = 1;
-		
-		
-		
+		// Test delete request
 		response = mvc.perform(MockMvcRequestBuilders.post("/instructor/delete").accept(MediaType.APPLICATION_JSON)
-				.content(asJsonString(assignment)).contentType(MediaType.APPLICATION_JSON))
+				.content(asJsonString(adto)).contentType(MediaType.APPLICATION_JSON))
 		.andReturn().getResponse();
 		
-//		verify(assignmentRepository, times(1)).save(any());
+		
 		assertEquals(200, response.getStatus());
 		
 	}

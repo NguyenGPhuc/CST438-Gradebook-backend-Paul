@@ -78,13 +78,17 @@ public class InstructorController{
 	@PutMapping("/instructor/update")
 	public void updateAssignment (@RequestBody AssignmentDTO updateAssignment) {
 		
-		Optional<Assignment> op = assignmentRepository.findById(updateAssignment.assignmentId);
+//		Optional<Assignment> op = assignmentRepository.findById(updateAssignment.assignmentId);
 		
-		if (!op.isPresent()) {
+		Assignment op = assignmentRepository.findById(updateAssignment.assignmentId).get();
+		
+//		System.out.println(op + "I'm in update function");
+		
+		if (op == null) {
 			throw new ResponseStatusException( HttpStatus.BAD_REQUEST, "Invalid assignment primary key "+updateAssignment.assignmentId);
 		}else {
-			Assignment upDate = op.get();
-	
+			Assignment upDate = new Assignment(updateAssignment);
+			
 			assignmentRepository.save(upDate);
 		}
 		
