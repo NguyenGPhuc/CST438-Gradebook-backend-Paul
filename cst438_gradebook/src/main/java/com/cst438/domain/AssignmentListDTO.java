@@ -1,5 +1,6 @@
 package com.cst438.domain;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 /*
@@ -10,17 +11,21 @@ public class AssignmentListDTO {
 	public static class AssignmentDTO {
 		public int assignmentId;
 		public String assignmentName;
-		public String dueDate;
+		public Date dueDate;
 		public String courseTitle;
 		public int courseId;
 
-		public AssignmentDTO(int assignmentId, int courseId, String assignmentName, String dueDate,
+		public AssignmentDTO(int assignmentId, int courseId, String assignmentName, Date dueDate,
 				String courseTitle) {
 			this.assignmentId = assignmentId;
 			this.courseId = courseId;
 			this.assignmentName = assignmentName;
 			this.dueDate = dueDate;
 			this.courseTitle = courseTitle;
+		}
+
+		public AssignmentDTO() {
+			super();
 		}
 
 		@Override
@@ -88,5 +93,6 @@ public class AssignmentListDTO {
 			return false;
 		return true;
 	}
+	
 	
 }

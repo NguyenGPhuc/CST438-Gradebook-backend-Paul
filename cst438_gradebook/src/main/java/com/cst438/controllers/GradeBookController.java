@@ -52,14 +52,13 @@ public class GradeBookController {
 		List<Assignment> assignments = assignmentRepository.findNeedGradingByEmail(email);
 		AssignmentListDTO result = new AssignmentListDTO();
 		for (Assignment a: assignments) {
-			result.assignments.add(new AssignmentListDTO.AssignmentDTO(a.getId(), a.getCourse().getCourse_id(), a.getName(), a.getDueDate().toString() , a.getCourse().getTitle()));
+			result.assignments.add(new AssignmentListDTO.AssignmentDTO(a.getId(), a.getCourse().getCourse_id(), a.getName(), a.getDueDate() , a.getCourse().getTitle()));
 		}
 		return result;
 	}
 	
 	@GetMapping("/gradebook/{id}")
-	public GradebookDTO getGradebook(@PathVariable("id") Integer assignmentId  ) {
-		
+	public GradebookDTO getGradebook(@PathVariable("id") Integer assignmentId ) {
 		String email = "dwisneski@csumb.edu";  // user name (should be instructor's email) 
 		Assignment assignment = checkAssignment(assignmentId, email);
 		
@@ -158,7 +157,7 @@ public class GradeBookController {
 	
 	private Assignment checkAssignment(int assignmentId, String email) {
 		// get assignment 
-		Assignment assignment = assignmentRepository.findById(assignmentId).orElse(null);
+		Assignment assignment = (assignmentRepository.findById(assignmentId)).orElse(null);
 		if (assignment == null) {
 			throw new ResponseStatusException( HttpStatus.BAD_REQUEST, "Assignment not found. "+assignmentId );
 		}
