@@ -29,6 +29,28 @@ public class Assignment {
 	private Date dueDate;
 	private int needsGrading;  // 0 = false,  1= true (past due date and not all students have grades)
 	
+	public Assignment(int id, Course course, String name, Date dueDate, int needsGrading) {
+		super();
+		this.id = id;
+		this.course = course;
+		this.name = name;
+		this.dueDate = dueDate;
+		this.needsGrading = needsGrading;
+	}
+	
+	public Assignment(AssignmentDTO a) {
+		super();
+		this.id = a.getAssignmentID();
+		this.course = a.getCourseId();
+		this.name = a.getassignmentName();
+		this.dueDate = a.getDueDate();
+		this.needsGrading = a.getNeedsGrading();
+	}
+	
+	public Assignment() {
+		super();
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -65,5 +87,10 @@ public class Assignment {
 		return "Assignment [id=" + id + ", course_id=" + course.getCourse_id() + ", name=" + name + ", dueDate=" + dueDate
 				+ ", needsGrading=" + needsGrading + "]";
 	}
+	public Assignment orElse(Object object) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	
 }
