@@ -5,6 +5,7 @@ public class EnrollmentDTO {
 	public String studentEmail;
 	public String studentName;
 	public int course_id;
+//	public Course courseId;
 	
 	public EnrollmentDTO() { } ;
 	
@@ -14,6 +15,13 @@ public class EnrollmentDTO {
 		this.studentName=studentName;
 		this.course_id = course_id;
 	}
+	
+//	public EnrollmentDTO(int id, String studentEmail, String studentName, Course course_id) {
+//		this.id = id;
+//		this.studentEmail=studentEmail;
+//		this.studentName=studentName;
+//		this.courseId = course_id;
+//	}
 	
 	
 	@Override
