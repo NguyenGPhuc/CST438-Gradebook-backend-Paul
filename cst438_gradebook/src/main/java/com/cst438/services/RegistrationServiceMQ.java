@@ -51,9 +51,7 @@ public class RegistrationServiceMQ extends RegistrationService {
 		
 		System.out.println("Receive enrollment :" + enrollmentDTO);
 
-	
-//			Enrollment e = new Enrollment(enrollmentDTO);
-		
+
 			Optional<Course> c = courseRepository.findById(enrollmentDTO.course_id);
 			
 			
@@ -61,16 +59,12 @@ public class RegistrationServiceMQ extends RegistrationService {
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Course does not exist");
 			}else {
 				
-//				Enrollment e = new Enrollment(enrollmentDTO);
-				
 				Enrollment e = new Enrollment();
 				e.setId(enrollmentDTO.id);
 				e.setStudentEmail(enrollmentDTO.studentEmail);
 				e.setStudentName(enrollmentDTO.studentName);
-//				e.setCourse(enrollmentDTO.course_id);
-				
-//				System.out.println("current enrollmentDTO course id: " + enrollmentDTO.courseId.getCourse_id());
-//				System.out.println("current e course id: " + e.getCourse().getCourse_id());
+				Course co = courseRepository.findById(enrollmentDTO.course_id).orElse(null);
+				e.setCourse(co);
 				
 				enrollmentRepository.save(e);
 					
@@ -81,7 +75,7 @@ public class RegistrationServiceMQ extends RegistrationService {
 	@Override
 	public void sendFinalGrades(int course_id, CourseDTOG courseDTO) {
 		 
-		System.out.println("Sending final grades through rabbitMQ" + course_id + " " + courseDTO);
+//		System.out.println("Sending final grades through rabbitMQ" + course_id + " " + courseDTO);
 		
 		System.out.println("Current registration name: " + registrationQueue.getName());
 		rabbitTemplate.convertAndSend(registrationQueue.getName(), courseDTO);

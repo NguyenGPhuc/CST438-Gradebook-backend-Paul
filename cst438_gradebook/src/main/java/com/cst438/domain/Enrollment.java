@@ -28,19 +28,6 @@ public class Enrollment {
 	@OneToMany(mappedBy="studentEnrollment")
 	List<AssignmentGrade> assignmentGrades;
 	
-	// MY CODE	
-//	public Enrollment() {};
-	
-	
-//	public Enrollment(EnrollmentDTO a) {
-//		super();
-//		this.id = a.id;
-//		this.course.setCourse_id(a.course_id);
-//		this.studentName = a.studentName;
-//		this.studentEmail = a.studentEmail;
-//		
-//		System.out.println(this.getCourse());
-//	}
 
 	public int getId() {
 		return id;
