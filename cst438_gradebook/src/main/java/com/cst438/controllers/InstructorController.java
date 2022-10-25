@@ -31,7 +31,7 @@ import com.cst438.domain.GradebookDTO;
 
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000","http://localhost:3001"})
+@CrossOrigin(origins = {"http://localhost:3001"})
 public class InstructorController{
 
 	@Autowired
@@ -78,11 +78,9 @@ public class InstructorController{
 	@PutMapping("/instructor/update")
 	public void updateAssignment (@RequestBody AssignmentDTO updateAssignment) {
 		
-//		Optional<Assignment> op = assignmentRepository.findById(updateAssignment.assignmentId);
-		
 		Assignment op = assignmentRepository.findById(updateAssignment.assignmentId).get();
 		
-//		System.out.println(op + "I'm in update function");
+		System.out.println(op + "I'm in update function");
 		
 		if (op == null) {
 			throw new ResponseStatusException( HttpStatus.BAD_REQUEST, "Invalid assignment primary key "+updateAssignment.assignmentId);
