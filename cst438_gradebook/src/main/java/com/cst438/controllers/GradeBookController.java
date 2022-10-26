@@ -28,7 +28,7 @@ import com.cst438.domain.GradebookDTO;
 import com.cst438.services.RegistrationService;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000","http://localhost:3001"})
+@CrossOrigin(origins = {"http://localhost:3001"})
 public class GradeBookController {
 	
 	@Autowired
@@ -157,7 +157,7 @@ public class GradeBookController {
 	
 	private Assignment checkAssignment(int assignmentId, String email) {
 		// get assignment 
-		Assignment assignment = (assignmentRepository.findById(assignmentId)).orElse(null);
+		Assignment assignment = ((Assignment) assignmentRepository.findById(assignmentId)).orElse(null);
 		if (assignment == null) {
 			throw new ResponseStatusException( HttpStatus.BAD_REQUEST, "Assignment not found. "+assignmentId );
 		}
