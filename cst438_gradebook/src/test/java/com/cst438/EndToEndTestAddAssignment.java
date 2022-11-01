@@ -56,9 +56,6 @@ public class EndToEndTestAddAssignment {
 	public static final String TEST_SEMESTER = "Winter";
 	public static final String TEST_COURSE_NAME = "Into to day seizing";
 	public static final int TEST_YEAR = 2023;
-	
-	public static final String TEST_STUDENT_NAME = "ETE Test";
-	public static final String TEST_USER_EMAIL = "ETE_test@csumb.edu";
 
 	@Autowired
 	EnrollmentRepository enrollmentRepository;
@@ -83,20 +80,8 @@ public class EndToEndTestAddAssignment {
 		c.setYear(TEST_YEAR);
 		c.setInstructor(TEST_INSTRUCTOR_NAME);
 		
-		// Add a new assignment for testing
-//		Assignment a = new Assignment();
-//
-//		a.setNeedsGrading(1);
-//
-//		// Add a new student to enrollment
-//		Enrollment e = new Enrollment();
-//		e.setCourse(c);
-//		e.setStudentEmail(TEST_USER_EMAIL);
-//		e.setStudentName(TEST_STUDENT_NAME);
 
 		courseRepository.save(c);
-//		assignmentRepository.save(a);
-//		enrollmentRepository.save(e);
 
 
 		// set the driver location and start driver
@@ -155,9 +140,8 @@ public class EndToEndTestAddAssignment {
 			}else {
 				assignmentRepository.delete(check);
 				courseRepository.delete(c);
-				
-				Course checkCourse = courseRepository.findById(TEST_COURSE_ID).orElse(null);
-				if(checkCourse == null) {
+	
+				if(c == null) {
 					System.out.println("Course deleted successfully! Ready for repeat testing.");
 				}
 				Assignment checkAgain = assignmentRepository.findByCourseId(TEST_COURSE_ID).orElse(null);
