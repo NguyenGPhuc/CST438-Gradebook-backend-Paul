@@ -84,19 +84,19 @@ public class EndToEndTestAddAssignment {
 		c.setInstructor(TEST_INSTRUCTOR_NAME);
 		
 		// Add a new assignment for testing
-		Assignment a = new Assignment();
-
-		a.setNeedsGrading(1);
-
-		// Add a new student to enrollment
-		Enrollment e = new Enrollment();
-		e.setCourse(c);
-		e.setStudentEmail(TEST_USER_EMAIL);
-		e.setStudentName(TEST_STUDENT_NAME);
+//		Assignment a = new Assignment();
+//
+//		a.setNeedsGrading(1);
+//
+//		// Add a new student to enrollment
+//		Enrollment e = new Enrollment();
+//		e.setCourse(c);
+//		e.setStudentEmail(TEST_USER_EMAIL);
+//		e.setStudentName(TEST_STUDENT_NAME);
 
 		courseRepository.save(c);
-		assignmentRepository.save(a);
-		enrollmentRepository.save(e);
+//		assignmentRepository.save(a);
+//		enrollmentRepository.save(e);
 
 
 		// set the driver location and start driver
@@ -147,13 +147,27 @@ public class EndToEndTestAddAssignment {
 			/*
 			 *  clean up database so the test is repeatable.
 			 */
-		
-			enrollmentRepository.delete(e);
-			assignmentRepository.delete(a);
-			enrollmentRepository.delete(e);
-			
 
+			
+			Assignment check = assignmentRepository.findByCourseId(TEST_COURSE_ID).orElse(null);
+			if(check == null) {
+				System.out.println("Assignment for course does not exist!");
+			}else {
+				assignmentRepository.delete(check);
+				courseRepository.delete(c);
+				
+				Course checkCourse = courseRepository.findById(TEST_COURSE_ID).orElse(null);
+				if(checkCourse == null) {
+					System.out.println("Course deleted successfully! Ready for repeat testing.");
+				}
+				Assignment checkAgain = assignmentRepository.findByCourseId(TEST_COURSE_ID).orElse(null);
+				if(checkAgain == null) {
+					System.out.println("Assignment deleted successfully!");
+				}
+			}
+			Thread.sleep(SLEEP_DURATION*2);
 			driver.quit();
+			
 		}
 
 	}
