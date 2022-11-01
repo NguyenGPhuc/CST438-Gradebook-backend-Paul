@@ -126,7 +126,7 @@ public class JunitTestAssignment {
 		AssignmentDTO adto = new AssignmentDTO();
 		adto.getCourseId();
 		adto.setAssignmentID(TEST_ASSIGNMENT_ID);
-		adto.setassignmentName("Some new name");
+		adto.setName("Some new name");
 		// set dueDate to 1 week before now.
 		adto.setDueDate(new java.sql.Date(System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000));
 		adto.setNeedsGrading(0);
@@ -174,7 +174,7 @@ public class JunitTestAssignment {
 		AssignmentDTO adto = new AssignmentDTO();
 		adto.getCourseId();
 		adto.setAssignmentID(TEST_ASSIGNMENT_ID);
-		adto.setassignmentName("Some new name");
+		adto.setName("Some new name");
 		// set dueDate to 1 week before now.
 		adto.setDueDate(new java.sql.Date(System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000));
 		adto.setNeedsGrading(0);

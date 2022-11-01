@@ -29,22 +29,19 @@ public class Assignment {
 	private Date dueDate;
 	private int needsGrading;  // 0 = false,  1= true (past due date and not all students have grades)
 	
-	public Assignment(int id, Course course, String name, Date dueDate, int needsGrading) {
+	public Assignment(int id, String name, int course_id, Date dueDate, int needsGrading) {
 		super();
 		this.id = id;
-		this.course = course;
 		this.name = name;
 		this.dueDate = dueDate;
 		this.needsGrading = needsGrading;
 	}
 	
-	public Assignment(AssignmentDTO a) {
+	public Assignment(AssignmentListDTO.AssignmentDTO adto) {
 		super();
-		this.id = a.getAssignmentID();
-		this.course = a.getCourseId();
-		this.name = a.getassignmentName();
-		this.dueDate = a.getDueDate();
-		this.needsGrading = a.getNeedsGrading();
+		this.id = adto.assignmentId;
+		this.name = adto.name;
+		this.dueDate = adto.dueDate;
 	}
 	
 	public Assignment() {
@@ -56,6 +53,13 @@ public class Assignment {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public Course getCourse() {
+		// TODO Auto-generated method stub
+		return this.course;
+	}
+	public void setCourse(Course course) {
+		this.course = course;
 	}
 	public String getName() {
 		return name;
@@ -76,21 +80,16 @@ public class Assignment {
 		this.needsGrading = needsGrading;
 	}
 	
-	public Course getCourse() {
-		return course;
-	}
-	public void setCourse(Course course) {
-		this.course = course;
-	}
 	@Override
 	public String toString() {
-		return "Assignment [id=" + id + ", course_id=" + course.getCourse_id() + ", name=" + name + ", dueDate=" + dueDate
-				+ ", needsGrading=" + needsGrading + "]";
+		return "Assignment [id=" + id + ", name=" + name + ", dueDate=" + dueDate + ", needsGrading=" + needsGrading + "]";
 	}
 	public Assignment orElse(Object object) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	
 	
 	
 }

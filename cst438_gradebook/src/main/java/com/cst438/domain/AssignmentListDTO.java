@@ -10,18 +10,20 @@ public class AssignmentListDTO {
 
 	public static class AssignmentDTO {
 		public int assignmentId;
-		public String assignmentName;
+		public String name;
 		public Date dueDate;
 		public String courseTitle;
 		public int courseId;
+		public int needsGrading;
 
 		public AssignmentDTO(int assignmentId, int courseId, String assignmentName, Date dueDate,
-				String courseTitle) {
+				String courseTitle, int needsGrading) {
 			this.assignmentId = assignmentId;
 			this.courseId = courseId;
-			this.assignmentName = assignmentName;
+			this.name = assignmentName;
 			this.dueDate = dueDate;
 			this.courseTitle = courseTitle;
+			this.needsGrading = needsGrading;
 		}
 
 		public AssignmentDTO() {
@@ -30,7 +32,7 @@ public class AssignmentListDTO {
 
 		@Override
 		public String toString() {
-			return "[assignmentId=" + assignmentId + ", assignmentName=" + assignmentName + ", dueDate="
+			return "[assignmentId=" + assignmentId + ", assignmentName=" + name + ", dueDate="
 					+ dueDate + ", courseTitle=" + courseTitle + ", courseId=" + courseId + "]";
 		}
 
@@ -46,10 +48,10 @@ public class AssignmentListDTO {
 			AssignmentDTO other = (AssignmentDTO) obj;
 			if (assignmentId != other.assignmentId)
 				return false;
-			if (assignmentName == null) {
-				if (other.assignmentName != null)
+			if (name == null) {
+				if (other.name != null)
 					return false;
-			} else if (!assignmentName.equals(other.assignmentName))
+			} else if (!name.equals(other.name))
 				return false;
 			if (courseId != other.courseId)
 				return false;
@@ -65,8 +67,45 @@ public class AssignmentListDTO {
 				return false;
 			return true;
 		}
-		
-		
+
+		public int getAssignmentID() {
+			// TODO Auto-generated method stub
+			return this.assignmentId;
+		}
+		public void setAssignmentID(int ID)
+		{
+			this.assignmentId = ID;
+		}
+		public String getAssignmentName() {
+			return this.name;
+		}
+		public void setName(String name) {
+			this.name = name;
+		}
+		public Date getDueDate() {
+			return this.dueDate;
+		}
+		public void setDueDate(Date date) {
+			this.dueDate = date;
+		}
+		public String getCourseTitle() {
+			return this.courseTitle;
+		}
+		public void setCourseTitle(String title) {
+			this.courseTitle = title;
+		}
+		public int getCourseId() {
+			return this.courseId;
+		}
+		public void setCourseID(int id) {
+			this.courseId = id;
+		}
+		public int getNeedsGrading() {
+			return this.needsGrading;
+		}
+		public void setNeedsGrading(int needsGrading) {
+			this.needsGrading = needsGrading;
+		}
 		
 	}
 
