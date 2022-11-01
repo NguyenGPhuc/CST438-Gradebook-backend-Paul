@@ -28,7 +28,7 @@ import com.cst438.domain.GradebookDTO;
 import com.cst438.services.RegistrationService;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3001"})
+@CrossOrigin(origins = {"http://localhost:3000"})
 public class GradeBookController {
 	
 	@Autowired
@@ -52,7 +52,7 @@ public class GradeBookController {
 		List<Assignment> assignments = assignmentRepository.findNeedGradingByEmail(email);
 		AssignmentListDTO result = new AssignmentListDTO();
 		for (Assignment a: assignments) {
-			result.assignments.add(new AssignmentListDTO.AssignmentDTO(a.getId(), a.getCourse().getCourse_id(), a.getName(), a.getDueDate() , a.getCourse().getTitle()));
+			result.assignments.add(new AssignmentListDTO.AssignmentDTO(a.getId(), a.getCourse().getCourse_id(), a.getName(), a.getDueDate() , a.getCourse().getTitle(), a.getNeedsGrading()));
 		}
 		return result;
 	}
@@ -157,7 +157,7 @@ public class GradeBookController {
 	
 	private Assignment checkAssignment(int assignmentId, String email) {
 		// get assignment 
-		Assignment assignment = ((Assignment) assignmentRepository.findById(assignmentId)).orElse(null);
+		Assignment assignment = assignmentRepository.findById(assignmentId).orElse(null);
 		if (assignment == null) {
 			throw new ResponseStatusException( HttpStatus.BAD_REQUEST, "Assignment not found. "+assignmentId );
 		}

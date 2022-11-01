@@ -6,16 +6,16 @@ public class AssignmentDTO {
 	
 	public int assignmentId;
 	public Course courseId;
-	public String assignmentName;
+	public String name;
 	public Date dueDate;
 	public String courseTitle;
 	public int needsGrading;
 	
-	public AssignmentDTO(int assignmentId, Course courseId, String assignmentName, Date dueDate, String courseTitle, int needsGrading) {
+	public AssignmentDTO(int assignmentId, Course courseId, String name, Date dueDate, String courseTitle, int needsGrading) {
 		super();
 		this.assignmentId = assignmentId;
 		this.courseId = courseId;
-		this.assignmentName = assignmentName;
+		this.name = name;
 		this.dueDate = dueDate;
 		this.courseTitle = courseTitle;
 		this.needsGrading = needsGrading;
@@ -41,12 +41,12 @@ public class AssignmentDTO {
 		this.courseId = courseId;
 	}
 
-	public String getassignmentName() {
-		return assignmentName;
+	public String getName() {
+		return name;
 	}
 
-	public void setassignmentName(String assignmentName) {
-		this.assignmentName = assignmentName;
+	public void setName(String assignmentName) {
+		this.name = assignmentName;
 	}
 
 	public Date getDueDate() {
@@ -82,10 +82,10 @@ public class AssignmentDTO {
 		AssignmentDTO other = (AssignmentDTO) obj;
 		if (assignmentId != other.assignmentId)
 			return false;
-		if (assignmentName == null) {
-			if (other.assignmentName != null)
+		if (name == null) {
+			if (other.name != null)
 				return false;
-		} else if (!assignmentName.equals(other.assignmentName))
+		} else if (!name.equals(other.name))
 			return false;
 		if (courseId != other.courseId)
 			return false;
@@ -101,6 +101,4 @@ public class AssignmentDTO {
 			return false;
 		return true;
 	}
-	
-	
 }
